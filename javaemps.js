@@ -99,5 +99,16 @@ function resetForm() {
   document.getElementById("salary").value = "";
 }
 
+function searchEmployee() {
+  let input = document.getElementById("searchBox").value.toLowerCase();
+  let rows = document.querySelectorAll("#empTable tbody tr");
+
+  rows.forEach(row => {
+    row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
+  });
+}
+
+
+
 // Initial load
 loadEmployees();
