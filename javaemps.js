@@ -99,15 +99,56 @@ function resetForm() {
   document.getElementById("salary").value = "";
 }
 
-function searchEmployee() {
-  let input = document.getElementById("searchBox").value.toLowerCase();
-  let rows = document.querySelectorAll("#empTable tbody tr");
+// function searchEmployee() {
+//   let input = document.getElementById("searchBox").value.toLowerCase();
+//   let rows = document.querySelectorAll("#empTable tbody tr");
 
-  rows.forEach(row => {
-    row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
-  });
+//   rows.forEach(row => {
+//     row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
+//   });
+// }
+
+
+//  axios.get(`${API_URL}/search`, {params:{keyword}})
+//  .then(response =>{
+//   const employee = response.data || [];
+  
+
+//  });
+
+function searchemps() {
+  const keyword = document.getElementById("searchBox").value.trim();
+
+  if (keyword === "") {
+    loadEmployees(); // show all employees if input is empty
+    return;
+  }
+
+  axios.get(`${API_URL}/search?keyword=${keyword}`)
+    .then(res => {
+      const tbody = document.querySelector("#empTable tbody");
+      tbody.innerHTML = "";
+
+      for (let i = 0; i < res.data.length; i++) {
+        const emp = res.data[i];
+
+        let row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${emp.id}</td>
+          <td>${emp.name}</td>
+          <td>${emp.department}</td>
+          <td>${emp.salary}</td>
+          <td>
+            <button onclick="viewEmployee(${emp.id})">View</button>
+            <button onclick="editEmployee(${emp.id}, '${emp.name}', '${emp.department}', ${emp.salary})">Edit</button>
+            <button onclick="deleteEmployee(${emp.id})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      }
+    })
+    .catch(err => console.error("Error searching employees:", err));
 }
-
 
 
 // Initial load
