@@ -35,7 +35,13 @@ document.getElementById("empForm").addEventListener("submit", function(e) {
   const department = document.getElementById("department").value;
   const salary = document.getElementById("salary").value;
 
-  const empData = { id, name, department, salary };
+  const username = document.getElementById("username").value;
+const password = document.getElementById("password").value;
+
+let empData = { name, username, password, department, salary };
+
+
+ 
 
   if (id) {
     axios.put(`${API_URL}/edit`, empData).then(() => {
